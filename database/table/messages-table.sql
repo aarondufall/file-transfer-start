@@ -1,11 +1,11 @@
 -- ----------------------------
---  Table structure for events
+--  Table structure for messages
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."events";
-CREATE TABLE "public"."events" (
+CREATE TABLE "public"."messages" (
+  "id" UUID NOT NULL DEFAULT gen_random_uuid(),
   "stream_name" varchar(255) NOT NULL COLLATE "default",
-  "position" int4 NOT NULL,
   "type" varchar(255) NOT NULL COLLATE "default",
+  "position" int4 NOT NULL,
   "global_position" bigserial NOT NULL ,
   "data" jsonb,
   "metadata" jsonb,
@@ -14,6 +14,6 @@ CREATE TABLE "public"."events" (
 WITH (OIDS=FALSE);
 
 -- ----------------------------
---  Primary key structure for table events
+--  Primary key structure for table messages
 -- ----------------------------
-ALTER TABLE "public"."events" ADD PRIMARY KEY ("global_position") NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "public"."messages" ADD PRIMARY KEY ("global_position") NOT DEFERRABLE INITIALLY IMMEDIATE;

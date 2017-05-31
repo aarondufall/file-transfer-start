@@ -2,14 +2,12 @@
 
 set -e
 
-clear
-
 echo
-echo "Listing Events"
+echo "Listing Messages"
 echo "= = ="
 echo
 
-default_name=event_source
+default_name=message_store
 
 if [ -z ${DATABASE_USER+x} ]; then
   echo "(DATABASE_USER is not set)"
@@ -27,7 +25,7 @@ else
 fi
 echo "Database name is: $database"
 
-default_table_name=events
+default_table_name=messages
 
 if [ -z ${TABLE_NAME+x} ]; then
   echo "(TABLE_NAME is not set)"
@@ -37,6 +35,18 @@ else
 fi
 echo "Table name is: $table"
 
+if [ -z ${STREAM_NAME+x} ]; then
+  echo "(STREAM_NAME is not set)"
+  stream_name=''
+else
+  stream_name=$STREAM_NAME
+  echo "Stream name is: $STREAM_NAME"
+fi
+
 echo
 
-psql $database -c "SELECT * FROM $table"
+if [ -z $stream_name ]; then
+  psql $database -c "SELECT * FROM $table"
+else
+  psql $database -c "SELECT * FROM $table WHERE stream_name = '$stream_name'"
+fi
